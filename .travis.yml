@@ -1,6 +1,9 @@
 language: rust
 rust:
   - 1.28.0
+env:
+  global:
+    - SCCACHE_DIR=$([ $TRAVIS_OS_NAME = 'linux' ] && echo "$HOME/.cache/sccache" || echo "$HOME/Library/Caches/Mozilla.sccache")
 stages:
   - name: test
     if: branch != docker-build
@@ -19,6 +22,8 @@ jobs:
         - rustup component add rustfmt-preview --toolchain nightly-2018-07-17
       before_script:
         - cargo fetch --verbose
+        - which sccache || cargo install sccache
+        - export RUSTC_WRAPPER=~/.cargo/bin/sccache
       script:
         - cargo +nightly-2018-07-17 fmt -- --check || TEST_FAILED=true
         - test $TEST_FAILED || RUST_BACKTRACE=1 cargo test --verbose --all || TEST_FAILED=true
@@ -36,6 +41,8 @@ jobs:
         - rustup component add rustfmt-preview --toolchain nightly-2018-07-17
       before_script:
         - cargo fetch --verbose
+        - which sccache || cargo install sccache
+        - export RUSTC_WRAPPER=~/.cargo/bin/sccache
       script:
         - cargo +nightly-2018-07-17 fmt -- --check || TEST_FAILED=true
         - test $TEST_FAILED || RUST_BACKTRACE=1 cargo test --verbose --all || TEST_FAILED=true
@@ -53,8 +60,13 @@ jobs:
         script: bash docker_push.sh
         on:
           branch: docker-build
-notifications:
-  webhooks: https://webhooks.gitter.im/e/71bb03cf9abce5b02c43
-cache: cargo
+# notifications:
+#   webhooks: https://webhooks.gitter.im/e/71bb03cf9abce5b02c43
+cache:
+  timeout: 1000
+  cargo: true
+  directories:
+    - "$HOME/.rustup"
+    - $SCCACHE_DIR
 git:
   depth: 1
