@@ -1,0 +1,57 @@
+[codechain]
+quiet = false
+db_path = "db/tendermint"
+keys_path = "test/tendermint/keys"
+password_path = "test/tendermint/password.json"
+chain = "tendermint"
+
+[mining]
+disable = false
+engine_signer = "tccq94guhkrfndnehnca06dlkxcfuq0gdlamvw9ga4f"
+# engine_signer = "tccq8p9hr53lnxnhzcn0d065lux7etz22azaca786tt"
+# engine_signer = "tccq8fj6lxn9tchqdqqe93yaga6fzxh5rndzu8k2gdw"
+mem_pool_mem_limit = 256 # MB
+mem_pool_size = 8192
+notify_work = []
+force_sealing = true
+reseal_on_txs = "all"
+reseal_min_period = 4000
+reseal_max_period = 120000
+work_queue_size = 20
+
+[network]
+disable = false
+interface = "0.0.0.0"
+port = 3485
+max_peers = 30
+min_peers = 10
+bootstrap_addresses = []
+sync = true
+parcel_relay = true
+discovery = true
+discovery_type = "unstructured"
+discovery_refresh = 60000
+discovery_bucket_size = 10
+
+[rpc]
+disable = false
+interface = "127.0.0.1"
+port = 8080
+
+[ipc]
+disable = true
+path = "/tmp/jsonrpc.ipc"
+
+[ws]
+disable = true
+interface = "127.0.0.1"
+port = 8081
+max_connections = 100
+
+[snapshot]
+disable = true
+path = "snapshot"
+
+[stratum]
+disable = true
+port = 8008
