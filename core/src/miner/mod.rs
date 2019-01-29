@@ -27,6 +27,7 @@ use ctypes::transaction::IncompleteTransaction;
 use cvm::ChainTimeInfo;
 use primitives::{Bytes, H256};
 
+pub use self::mem_pool::{AccountDetails, MemPool, PoolingInstant, TxOrigin, TxTimelock};
 pub use self::miner::{AuthoringParams, Miner, MinerOptions};
 pub use self::stratum::{Config as StratumConfig, Error as StratumError, Stratum};
 use crate::account_provider::{AccountProvider, SignError};
@@ -165,3 +166,6 @@ pub enum TransactionImportResult {
     /// Transaction was imported to future queue.
     Future,
 }
+
+#[cfg(all(feature = "nightly", test))]
+mod mem_pool_benches;

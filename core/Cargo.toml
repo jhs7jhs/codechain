@@ -42,3 +42,6 @@ util-error = { path = "../util/error" }
 
 [dev-dependencies]
 rand_xorshift = "0.1.0"
+
+[features]
+nightly = []
