@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#![cfg_attr(feature = "nightly", feature(test))]
+
 mod backup;
 mod mem_pool;
 mod mem_pool_types;
@@ -167,3 +169,6 @@ pub enum TransactionImportResult {
     /// Transaction was imported to future queue.
     Future,
 }
+
+#[cfg(all(feature = "nightly", test))]
+mod mem_pool_benches;
