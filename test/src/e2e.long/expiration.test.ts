@@ -29,7 +29,7 @@ describe("TransferAsset expiration test", function() {
 
     beforeEach(async function() {
         node = new CodeChain({
-            argv: ["--force-sealing", "--no-reseal-timer"]
+            argv: ["--force-sealing"]
         });
         await node.start();
     });

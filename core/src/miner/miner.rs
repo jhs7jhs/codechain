@@ -519,7 +519,7 @@ impl Miner {
             && !self.options.force_sealing
             && Instant::now() <= *self.next_mandatory_reseal.read()
         {
-            ctrace!(MINER, "seal_block_internally: no sealing.");
+            ctrace!(MINER, "seal_block_internally: no sealing. {}", self.options.force_sealing);
             return false
         }
         ctrace!(MINER, "seal_block_internally: attempting internal seal.");

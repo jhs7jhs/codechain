@@ -208,6 +208,7 @@ export default class CodeChain {
 
             const readline = createReadline({ input: this.process!.stderr });
             readline.on("line", (line: string) => {
+                console.log(line);
                 if (line.includes("Initialization complete")) {
                     this.isTestFailed = false;
                     resolve();

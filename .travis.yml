@@ -10,27 +10,8 @@ stages:
 jobs:
   include:
     - stage: test
-      name: test-osx
+      name: int-test-osx
       os: osx
-      before_install:
-        - SKIP=`.travis/check-mergify-merge` && if [[ "$SKIP" = "skip" ]]; then exit 0; fi
-        - SKIP=`.travis/check-change '^(docs|spec)/'` && if [[ "$SKIP" = "skip" ]]; then exit 0; fi
-        - SKIP=`.travis/check-change '^test/'` && if [[ "$SKIP" = "skip" ]]; then exit 0; fi
-      install:
-        - rustup toolchain install nightly-2018-12-06
-        - rustup component add rustfmt-preview --toolchain nightly-2018-12-06
-        - rustup component add clippy-preview --toolchain nightly-2018-12-06
-      before_script:
-        - cargo fetch --verbose
-      script:
-        - cargo +nightly-2018-12-06 fmt -- --check || exit 1
-        - cargo +nightly-2018-12-06 clippy --all-targets --all-features -- -D warnings || exit 1
-        - RUST_BACKTRACE=1 cargo test --verbose --all || exit 1
-    - name: int-test-osx
-      os: osx
-      before_install:
-        - SKIP=`.travis/check-mergify-merge` && if [[ "$SKIP" = "skip" ]]; then exit 0; fi
-        - SKIP=`.travis/check-change '^(docs|spec)/'` && if [[ "$SKIP" = "skip" ]]; then exit 0; fi
       install:
         - nvm install 10
         - nvm use 10
@@ -40,42 +21,7 @@ jobs:
       script:
         - cd test && yarn && yarn lint || exit 1
         - cargo build || exit 1
-        - INT_TEST_FLAG=true && yarn start-short
-        - yarn start-long
-      after_failure:
-        - test $INT_TEST_FLAG && ./upload_logs.sh
-    - name: test-linux
-      os: linux
-      before_install:
-        - SKIP=`.travis/check-mergify-merge` && if [[ "$SKIP" = "skip" ]]; then exit 0; fi
-        - SKIP=`.travis/check-change '^(docs|spec)/'` && if [[ "$SKIP" = "skip" ]]; then exit 0; fi
-        - SKIP=`.travis/check-change '^test/'` && if [[ "$SKIP" = "skip" ]]; then exit 0; fi
-      install:
-        - rustup toolchain install nightly-2018-12-06
-        - rustup component add rustfmt-preview --toolchain nightly-2018-12-06
-        - rustup component add clippy-preview --toolchain nightly-2018-12-06
-      before_script:
-        - cargo fetch --verbose
-      script:
-        - cargo +nightly-2018-12-06 fmt -- --check || exit 1
-        - cargo +nightly-2018-12-06 clippy --all-targets --all-features -- -D warnings || exit 1
-        - RUST_BACKTRACE=1 cargo test --verbose --all || exit 1
-    - name: int-test-linux
-      os: linux
-      before_install:
-        - SKIP=`.travis/check-mergify-merge` && if [[ "$SKIP" = "skip" ]]; then exit 0; fi
-        - SKIP=`.travis/check-change '^(docs|spec)/'` && if [[ "$SKIP" = "skip" ]]; then exit 0; fi
-      install:
-        - nvm install 10
-        - nvm use 10
-        - npm install -g yarn
-      before_script:
-        - cargo fetch --verbose
-      script:
-        - cd test && yarn && yarn lint || exit 1
-        - cargo build || exit 1
-        - INT_TEST_FLAG=true && yarn start-short
-        - yarn start-long
+        - INT_TEST_FLAG=true && yarn start-long -f "expiration"
       after_failure:
         - test $INT_TEST_FLAG && ./upload_logs.sh
     - stage: deploy
