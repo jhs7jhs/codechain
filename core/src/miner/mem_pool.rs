@@ -248,7 +248,7 @@ impl MemPool {
     where
         F: Fn(&Public) -> AccountDetails, {
         ctrace!(MEM_POOL, "add() called, time: {}, timestamp: {}", current_time, current_timestamp);
-        let mut insert_results = Vec::new();
+        let mut insert_results = Vec::with_capacity(inputs.len());
         let mut to_insert: HashMap<Public, Vec<u64>> = HashMap::new();
         let mut new_local_accounts = HashSet::new();
         let mut batch = backup::backup_batch_with_capacity(inputs.len());

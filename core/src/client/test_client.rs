@@ -193,7 +193,7 @@ impl TestBlockChainClient {
             header.set_parent_hash(*self.last_hash.read());
             header.set_number(n as BlockNumber);
             header.set_extra_data(self.extra_data.clone());
-            let mut transactions = Vec::new();
+            let mut transactions = Vec::with_capacity(transaction_length);
             for _ in 0..transaction_length {
                 let keypair = Random.generate().unwrap();
                 // Update seqs value

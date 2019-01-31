@@ -54,7 +54,7 @@ pub fn decode(bytes: &[u8]) -> Result<Vec<Instruction>, DecoderError> {
             opcode::PUSHB => {
                 let len = *iter.next().ok_or(DecoderError::ScriptTooShort)?;
                 // FIXME : optimize blob assignment
-                let mut blob = Vec::new();
+                let mut blob = Vec::with_capacity(len as usize);
                 for _ in 0..len {
                     blob.push(*iter.next().ok_or(DecoderError::ScriptTooShort)?);
                 }
